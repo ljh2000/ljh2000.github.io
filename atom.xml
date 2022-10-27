@@ -6,7 +6,7 @@
   <link href="http://ljh2000.github.io/atom.xml" rel="self"/>
   
   <link href="http://ljh2000.github.io/"/>
-  <updated>2022-10-17T13:56:33.629Z</updated>
+  <updated>2022-10-27T15:29:50.192Z</updated>
   <id>http://ljh2000.github.io/</id>
   
   <author>
@@ -15,6 +15,44 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Intro to NLP</title>
+    <link href="http://ljh2000.github.io/2022/10/27/Intro-to-NLP/"/>
+    <id>http://ljh2000.github.io/2022/10/27/Intro-to-NLP/</id>
+    <published>2022-10-27T15:28:08.000Z</published>
+    <updated>2022-10-27T15:29:50.192Z</updated>
+    
+    <content type="html"><![CDATA[<p>《自然语言处理入门》 何晗著 人民邮电出版社 </p><span id="more"></span><h1 id="Chapter-2-词典分词"><a href="#Chapter-2-词典分词" class="headerlink" title="Chapter 2 词典分词"></a>Chapter 2 词典分词</h1><h2 id="2-1-词典与切分算法"><a href="#2-1-词典与切分算法" class="headerlink" title="2.1 词典与切分算法"></a>2.1 词典与切分算法</h2><ul><li><p>齐夫定律：单词的词频与词频排名成反比</p></li><li><p>幂律分布（长尾效应）</p></li><li><p>完全切分：遍历文本中连续序列，查询序列是否在词典中（输出所有可能的单词）</p></li><li><p>正向最长匹配：从前往后扫描，优先输出更长的单词（单词越长优先度越高）</p></li><li><p>逆向最长匹配：从后往前扫描，保留最长单词</p></li><li><p>双向最长匹配：</p><ul><li>同时执行正向和逆向最长匹配，若两者的词数不同，则返回词数更少的那一个</li><li>否则，返回两者中单字更少的那一个。当单字数也相同时，优先返回逆向最长匹配的结果。</li></ul></li><li><p>字典树（trie树、前缀树）</p><ul><li>字典树中每条边对应一个字</li><li>从根节点往下的路径构成字符串</li><li>根节点完美散列，其余节点用二分查找（仅在根节点实现散列策略，普通节点维护数组的有序性，基于数组实现二分查找）</li></ul></li><li><p>双数组字典树（DAT）：base&#x2F;check 双数组</p><ul><li><p>常规字典树，$c$ 个子节点时，每次状态转移的复杂度为 $O(\log c)$</p></li><li><p>当状态 b 接受字符 c 转移到状态 p 时</p><pre class="language-python" data-language="python"><code class="language-python">p <span class="token operator">=</span> base<span class="token punctuation">[</span>b<span class="token punctuation">]</span> <span class="token operator">+</span> c   check<span class="token punctuation">[</span>p<span class="token punctuation">]</span> <span class="token operator">=</span> base<span class="token punctuation">[</span>b<span class="token punctuation">]</span></code></pre></li><li><p>单次状态转移的时间复杂度都是常数</p></li></ul></li><li><p>AC 自动机</p><ul><li>DAT 实现全切分的复杂度为 $O(n^2)$，AC自动机一次扫描就能查询出所有的单词，广泛用于多字符串搜索</li><li>多模式匹配：给定多个词语（模式串），从母文本中匹配它们</li><li>AC 自动机为前缀树上的每个节点建立一棵后缀树：<ul><li>goto 表：将每个模式串索引到前缀树上，根节点还接受任意其他字符并转移到自己</li><li>output 表：从初始状态到当前状态的路径本身对应的模式串 + 路径的后缀所对应的模式串</li><li>fail 表：存储状态转移失败后回退的最佳状态，即能记住已匹配上的字符串的最长后缀那个状态，<ul><li></li></ul></li></ul></li></ul></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;《自然语言处理入门》 何晗著 人民邮电出版社 &lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Book" scheme="http://ljh2000.github.io/categories/Book/"/>
+    
+    
+    <category term="NLP" scheme="http://ljh2000.github.io/tags/NLP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title></title>
+    <link href="http://ljh2000.github.io/2022/10/23/Adversarial%20Robustness%20-%20Theory%20and%20Practice/"/>
+    <id>http://ljh2000.github.io/2022/10/23/Adversarial%20Robustness%20-%20Theory%20and%20Practice/</id>
+    <published>2022-10-23T14:13:15.831Z</published>
+    <updated>2022-10-23T15:15:10.329Z</updated>
+    
+    <content type="html"><![CDATA[<p>链接：<a href="https://adversarial-ml-tutorial.org/">https://adversarial-ml-tutorial.org/</a></p><span id="more"></span><h1 id="Chapter-1-Introduction-to-adversarial-robustness"><a href="#Chapter-1-Introduction-to-adversarial-robustness" class="headerlink" title="Chapter 1 - Introduction to adversarial robustness"></a>Chapter 1 - Introduction to adversarial robustness</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;链接：&lt;a href=&quot;https://adversarial-ml-tutorial.org/&quot;&gt;https://adversarial-ml-tutorial.org/&lt;/a&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>LibDX:A Cross-Platform and Accurate System to Detect Third-Party Libraries in Binary Code</title>
