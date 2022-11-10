@@ -6,7 +6,7 @@
   <link href="http://ljh2000.github.io/atom.xml" rel="self"/>
   
   <link href="http://ljh2000.github.io/"/>
-  <updated>2022-11-10T00:52:01.131Z</updated>
+  <updated>2022-11-10T01:30:43.615Z</updated>
   <id>http://ljh2000.github.io/</id>
   
   <author>
@@ -17,20 +17,16 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title></title>
-    <link href="http://ljh2000.github.io/2022/11/10/ParchCore-Towards%20Total%20Recall%20in%20Industrial%20Anomaly%20Detection/"/>
-    <id>http://ljh2000.github.io/2022/11/10/ParchCore-Towards%20Total%20Recall%20in%20Industrial%20Anomaly%20Detection/</id>
-    <published>2022-11-09T17:43:17.299Z</published>
-    <updated>2022-11-10T00:52:01.131Z</updated>
+    <title>ParchCore - Towards Total Recall in Industrial Anomaly Detection</title>
+    <link href="http://ljh2000.github.io/2022/11/10/ParchCore-Towards-Total-Recall-in-Industrial-Anomaly-Detection/"/>
+    <id>http://ljh2000.github.io/2022/11/10/ParchCore-Towards-Total-Recall-in-Industrial-Anomaly-Detection/</id>
+    <published>2022-11-10T01:25:33.000Z</published>
+    <updated>2022-11-10T01:30:43.615Z</updated>
     
-    <content type="html"><![CDATA[<h1id="parchcore-towards-total-recall-in-industrial-anomaly-detection">ParchCore:Towards Total Recall in Industrial Anomaly Detection</h1><h2 id="abstract">Abstract</h2><p>Being able to spot defective parts is a critical component inlarge-scale industrial manufacturing. A particular challenge that weaddress in this work is the cold-start problem: fit a model usingnominal (non-defective) example images only. While handcrafted solutionsper class are possible, the goal is to build systems that work wellsimultaneously on many different tasks automatically. The best peformingapproaches combine embeddings from ImageNet models with an outlierdetection model. In this paper, we extend on this line of work andpropose PatchCore, which uses a maximally representative memory bank ofnominal patchfeatures. PatchCore offers competitive inference timeswhile achieving state-of-the-art performance for both detection andlocalization. On the challenging, widely used MVTec AD benchmarkPatchCore achieves an image-level anomaly detection AUROC score of up to99.6%, more than halving the error compared to the next best competitor.We further report competitive results on two additional datasets andalso find competitive results in the few samples regime. Code:github.com/amazon-research/patchcore-inspection.</p><span id="more"></span><ul><li>冷启动问题</li><li>离群点检测模型</li><li>PatchCore -&gt; 异常检测与定位</li></ul><h2 id="introduction">Introduction</h2>]]></content>
+    <content type="html"><![CDATA[<p>Being able to spot defective parts is a critical component inlarge-scale industrial manufacturing. A particular challenge that weaddress in this work is the cold-start problem: fit a model usingnominal (non-defective) example images only. While handcrafted solutionsper class are possible, the goal is to build systems that work wellsimultaneously on many different tasks automatically. The best peformingapproaches combine embeddings from ImageNet models with an outlierdetection model. In this paper, we extend on this line of work andpropose PatchCore, which uses a maximally representative memory bank ofnominal patchfeatures. PatchCore offers competitive inference timeswhile achieving state-of-the-art performance for both detection andlocalization. On the challenging, widely used MVTec AD benchmarkPatchCore achieves an image-level anomaly detection AUROC score of up to99.6%, more than halving the error compared to the next best competitor.We further report competitive results on two additional datasets andalso find competitive results in the few samples regime. Code:github.com/amazon-research/patchcore-inspection.</p><span id="more"></span><h2 id="abstract">Abstract</h2><ul><li>冷启动问题</li><li>离群点检测模型</li><li>PatchCore -&gt; 异常检测与定位</li></ul><h2 id="introduction">Introduction</h2>]]></content>
     
     
-    <summary type="html">&lt;h1
-id=&quot;parchcore-towards-total-recall-in-industrial-anomaly-detection&quot;&gt;ParchCore:
-Towards Total Recall in Industrial Anomaly Detection&lt;/h1&gt;
-&lt;h2 id=&quot;abstract&quot;&gt;Abstract&lt;/h2&gt;
-&lt;p&gt;Being able to spot defective parts is a critical component in
+    <summary type="html">&lt;p&gt;Being able to spot defective parts is a critical component in
 large-scale industrial manufacturing. A particular challenge that we
 address in this work is the cold-start problem: fit a model using
 nominal (non-defective) example images only. While handcrafted solutions
@@ -50,6 +46,10 @@ github.com/amazon-research/patchcore-inspection.&lt;/p&gt;</summary>
     
     
     
+    <category term="Paper" scheme="http://ljh2000.github.io/categories/Paper/"/>
+    
+    
+    <category term="Anomaly Detection" scheme="http://ljh2000.github.io/tags/Anomaly-Detection/"/>
     
   </entry>
   
