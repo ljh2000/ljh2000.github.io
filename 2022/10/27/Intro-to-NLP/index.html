@@ -264,8 +264,7 @@ check<span class="token punctuation">[</span>p<span class="token punctuation">]<
 <h2 id="ac自动机">AC自动机</h2>
 <p>1、AC 自动机</p>
 <ul>
-<li><p>DAT 实现全切分的复杂度为 <span
-class="math inline">\(O(n^2)\)</span>，AC自动机一次扫描就能查询出所有的单词，广泛用于多字符串搜索</p></li>
+<li><p>DAT 实现全切分的复杂度为 <span class="math inline">\(O(n^2)\)</span>，AC自动机一次扫描就能查询出所有的单词，广泛用于多字符串搜索</p></li>
 <li><p>多模式匹配：给定多个词语（模式串），从母文本中匹配它们</p></li>
 <li><p>AC 自动机为前缀树上的每个节点建立一棵后缀树：</p>
 <ul>
@@ -303,11 +302,8 @@ w_k$，</p></li>
 <li><p>语言模型：<span class="math inline">\(p(w) = p(w_1 w_2 ... w_k) =
 p(w_1 | w_0) \times p(w_2|w_0 w_1) \times ... \times p(w_{k+1}|w_0
 w_1...w_k)=\prod_{t=1}^{k+1}p(w_t|w_0 w_1...w_{t-1})\)</span></p></li>
-<li><p><span class="math inline">\(w_0=BOS,&lt;s&gt;\)</span>；<span
-class="math inline">\(w_{k+1}=EOS,&lt;/s&gt;\)</span></p></li>
-<li><p>根据语料库，使用极大似然估计（MLE）可计算每个后验概率，其中，<span
-class="math inline">\(c(w_0...w_t)\)</span>表示计数： <span
-class="math display">\[
+<li><p><span class="math inline">\(w_0=BOS,&lt;s&gt;\)</span>；<span class="math inline">\(w_{k+1}=EOS,&lt;/s&gt;\)</span></p></li>
+<li><p>根据语料库，使用极大似然估计（MLE）可计算每个后验概率，其中，<span class="math inline">\(c(w_0...w_t)\)</span>表示计数： <span class="math display">\[
 p(w_{t}|w_0 w_1...w_{t-1})=p_{ML}(w_{t}|w_0
 w_1...w_{t-1})=\frac{c(w_0...w_t)}{c(w_0...w_{t-1})}
 \]</span></p></li>
@@ -315,8 +311,7 @@ w_1...w_{t-1})=\frac{c(w_0...w_t)}{c(w_0...w_{t-1})}
 </ul>
 <p>3、马尔科夫链</p>
 <ul>
-<li>马尔科夫假设：只考虑前一个单词；可构成二元语法模型： <span
-class="math display">\[
+<li>马尔科夫假设：只考虑前一个单词；可构成二元语法模型： <span class="math display">\[
 p(w)=\prod_{t=1}^{k+1}p(w_t|w_{t-1}）
 \]</span></li>
 <li>n 元语法：仅考虑 n 个单词。然而，n 越大，数据稀疏问题越严峻</li>
@@ -479,7 +474,7 @@ p(w)=\prod_{t=1}^{k+1}p(w_t|w_{t-1}）
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">7k</span>
+    <span title="站点总字数">8k</span>
 </div>
 
         
