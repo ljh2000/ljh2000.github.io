@@ -20,17 +20,17 @@
     var CONFIG = {"hostname":"ljh2000.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="CVPR2022，工业界异常检测，应用于冷启动场景，PatchCore 采用离群点检测，实现异常检测与定位。">
+  <meta name="description" content="CVPR2022，工业界异常检测，应用于冷启动场景，PatchCore 采用离群点检测，实现异常检测与定位。 论文链接：Towards Total Recall in Industrial Anomaly Detection">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ParchCore - Towards Total Recall in Industrial Anomaly Detection">
 <meta property="og:url" content="http://ljh2000.github.io/2022/11/10/ParchCore-Towards-Total-Recall-in-Industrial-Anomaly-Detection/index.html">
 <meta property="og:site_name" content="ljh2000">
-<meta property="og:description" content="CVPR2022，工业界异常检测，应用于冷启动场景，PatchCore 采用离群点检测，实现异常检测与定位。">
+<meta property="og:description" content="CVPR2022，工业界异常检测，应用于冷启动场景，PatchCore 采用离群点检测，实现异常检测与定位。 论文链接：Towards Total Recall in Industrial Anomaly Detection">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://ljh2000.github.io/2022/11/10/ParchCore-Towards-Total-Recall-in-Industrial-Anomaly-Detection/1.png">
 <meta property="og:image" content="http://ljh2000.github.io/2022/11/10/ParchCore-Towards-Total-Recall-in-Industrial-Anomaly-Detection/2.png">
 <meta property="article:published_time" content="2022-11-10T01:25:33.000Z">
-<meta property="article:modified_time" content="2022-11-16T15:03:59.615Z">
+<meta property="article:modified_time" content="2022-11-17T16:36:39.843Z">
 <meta property="article:author" content="ljh2000">
 <meta property="article:tag" content="Anomaly Detection">
 <meta name="twitter:card" content="summary">
@@ -200,7 +200,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-11-16 23:03:59" itemprop="dateModified" datetime="2022-11-16T23:03:59+08:00">2022-11-16</time>
+                <time title="修改时间：2022-11-18 00:36:39" itemprop="dateModified" datetime="2022-11-18T00:36:39+08:00">2022-11-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -232,6 +232,8 @@
       
         <p>CVPR2022，工业界异常检测，应用于冷启动场景，PatchCore
 采用离群点检测，实现异常检测与定位。</p>
+<p>论文链接：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2106.08265v1">Towards Total
+Recall in Industrial Anomaly Detection</a></p>
 <p><img src="/2022/11/10/ParchCore-Towards-Total-Recall-in-Industrial-Anomaly-Detection/1.png"></p>
 <span id="more"></span>
 <h2 id="abstract">Abstract</h2>
@@ -308,13 +310,11 @@ m-n ||_2
 PatchCore</h3>
 <ul>
 <li>根据训练集得到 <code>Memory Bank</code> 即 <span class="math inline">\(M\)</span> 之后，对于测试图片 <span class="math inline">\(x^{test}\)</span>，计算测试图片的
-<code>patch-feature</code>，得到 <span class="math inline">\(m^{test}\)</span>。计算 <span class="math inline">\(P(x^{test})\)</span> 到集合 <span class="math inline">\(M\)</span></li>
+<code>patch-feature</code>，得到 <span class="math inline">\(m^{test}\)</span>。计算 <span class="math inline">\(P(x^{test})\)</span> 到集合<span class="math inline">\(M\)</span>的距离，并找到距离最远的点 <span class="math inline">\(m^{test,*}\)</span>，其中，<span class="math inline">\(arg\min\)</span> 计算的是点 <span class="math inline">\(m^{test}\)</span> 到集合 <span class="math inline">\(M\)</span> 的距离，然后找到距离最远的点 <span class="math inline">\(m^{test,*}\)</span>：</li>
 </ul>
-<p>的距离，并找到距离最远的点 <span class="math inline">\(m^{test,*}\)</span>，其中，<span class="math inline">\(arg\min\)</span> 计算的是点 <span class="math inline">\(m^{test}\)</span> 到集合 <span class="math inline">\(M\)</span> 的距离，然后找到距离最远的点 <span class="math inline">\(m^{test,*}\)</span>： <span class="math display">\[
-m^{test,*},m^* = arg\max_{m_{test} \in P(x^{test})} \ arg \min_{m \in M}
-||m^{test}-m||_2 \\
-s^*=||m^{test,*}-m^*||_2
-\]</span></p>
+<p>$$ m^{test,<em>},m^</em> = arg<em>{m</em>{test} P(x^{test})}  arg _{m
+M} ||m^{test}-m||_2 \</p>
+<p>s<sup><em>=||m^{test,</em>}-m</sup>*||_2 $$</p>
 <ul>
 <li>在 <span class="math inline">\(m*\)</span> 的最近点集，计算分数，求
 <span class="math inline">\(softmax\)</span>： <span class="math display">\[
@@ -475,7 +475,7 @@ PatchCore</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="na
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -484,7 +484,7 @@ PatchCore</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="na
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">8k</span>
+    <span title="站点总字数">14k</span>
 </div>
 
         

@@ -27,11 +27,13 @@
 <meta property="og:site_name" content="ljh2000">
 <meta property="og:description" content="学习笔记 《自然语言处理入门》 何晗著 人民邮电出版社">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://ljh2000.github.io/2022/10/27/Intro-to-NLP/Users/ljh2000/AppData/Roaming/Typora/typora-user-images/image-20221227014938149.png">
 <meta property="article:published_time" content="2022-10-27T15:28:08.000Z">
-<meta property="article:modified_time" content="2022-11-07T12:55:20.602Z">
+<meta property="article:modified_time" content="2022-12-26T18:35:55.130Z">
 <meta property="article:author" content="ljh2000">
 <meta property="article:tag" content="NLP">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ljh2000.github.io/2022/10/27/Intro-to-NLP/Users/ljh2000/AppData/Roaming/Typora/typora-user-images/image-20221227014938149.png">
 
 <link rel="canonical" href="http://ljh2000.github.io/2022/10/27/Intro-to-NLP/">
 
@@ -197,7 +199,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-11-07 20:55:20" itemprop="dateModified" datetime="2022-11-07T20:55:20+08:00">2022-11-07</time>
+                <time title="修改时间：2022-12-27 02:35:55" itemprop="dateModified" datetime="2022-12-27T02:35:55+08:00">2022-12-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -215,7 +217,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.5k</span>
+              <span>7.7k</span>
             </span>
 
         </div>
@@ -307,17 +309,433 @@ w_1...w_k)=\prod_{t=1}^{k+1}p(w_t|w_0 w_1...w_{t-1})\)</span></p></li>
 p(w_{t}|w_0 w_1...w_{t-1})=p_{ML}(w_{t}|w_0
 w_1...w_{t-1})=\frac{c(w_0...w_t)}{c(w_0...w_{t-1})}
 \]</span></p></li>
-<li><p>数据稀疏问题：长度越大的句子越难出现，语料库难以统计到长句子的频次；计算代价大</p></li>
+<li><p>数据稀疏问题：长度越大的句子越难出现（实际遇到的句子大部分都在语料库之外），语料库难以统计到长句子的频次；计算代价大</p></li>
 </ul>
 <p>3、马尔科夫链</p>
 <ul>
-<li>马尔科夫假设：只考虑前一个单词；可构成二元语法模型： <span class="math display">\[
+<li><p>马尔科夫假设：只考虑前一个单词；可构成二元语法模型： <span class="math display">\[
 p(w)=\prod_{t=1}^{k+1}p(w_t|w_{t-1}）
-\]</span></li>
-<li>n 元语法：仅考虑 n 个单词。然而，n 越大，数据稀疏问题越严峻</li>
-<li></li>
+\]</span></p></li>
+<li><p>n 元语法：仅考虑 n 个单词。然而，n
+越大，数据稀疏问题越严峻</p></li>
+<li><p>数据稀疏与平滑策略：利用低阶n元语法平滑高阶n元语法</p></li>
 </ul>
 <h2 id="中文分词语料库">中文分词语料库</h2>
+<p>1、《人民日报》 语料库PKU</p>
+<p>2、微软亚洲研究院语料库MSR</p>
+<p>3、繁体中文分词语料库：CITYU、AS</p>
+<h2 id="训练与预测">训练与预测</h2>
+<p>1、训练定义：训练（train）指的是，给定样本集（dataset，训练所用的样本集称为训练集）估计模型参数的过程</p>
+<p>2、预测定义：预测（predict）指的是利用模型对样本（句子）进行推断的过程</p>
+<p>3、词网与词图：</p>
+<ul>
+<li>词网指的是句子中所有一元语法构成的网状结构，将句子中所有单词找出来。起始位置（offset）相同的单词写作一行</li>
+<li>词网第 i 行中长 l 的单词与第 i+l
+行的所有单词互相连接，构成一个“词图”<br>
+</li>
+<li>节点距离计算</li>
+<li>维特比算法</li>
+</ul>
+<h1 id="chapter-4-隐马尔可夫模型与序列标注">Chapter 4
+隐马尔可夫模型与序列标注</h1>
+<h2 id="序列标注问题">序列标注问题</h2>
+<p>1、序列标注：给定序列 x，给出序列中每个元素对应的标签 y；对于 y
+的所有的可能取值集合称为标注集</p>
+<p>2、中文分词：Begin、End、Middle、Single</p>
+<p>3、词性标注</p>
+<p>4、命名实体识别：复合词，地名、机构等</p>
+<h2 id="隐马尔科夫模型">隐马尔科夫模型</h2>
+<p>1、隐马尔可夫模型（Hidden Markov Model，
+HMM）是描述两个时序序列联合分布 𝑝(𝒙, 𝒚)的概率模型，满足马尔科夫假设</p>
+<ul>
+<li>𝒙序列外界可见（外界指的是观测者）， 称为观测序列（observation
+sequence），观测 𝑥 为单词</li>
+<li>𝒚序列外界不可见，称为状态序列（state sequence），状态 𝑦 为词性<br>
+</li>
+<li>人们也称状态为隐状态（hidden state），而称观测为显状态（visible
+state）<br>
+</li>
+<li>马尔可夫假设：每个事件的发生概率只取决于前一个事件
+<ul>
+<li>将满足该假设的连续多个事件串联在一起，就构成了马尔可夫链</li>
+<li>隐马尔可夫模型理解起来就并不复杂了：它的马尔可夫假设作用于状态序列</li>
+<li>假设1：当前状态 <span class="math inline">\(y_t\)</span>
+仅仅依赖于前一个状态 <span class="math inline">\(y_{t-1}\)</span>，连续多个状态构成隐马尔可夫链
+𝒚</li>
+<li>假设2：任意时刻的观测 <span class="math inline">\(x_t\)</span>
+只依赖于该时刻的状态 <span class="math inline">\(y_t\)</span>，与其他时刻的状态或观测独立无关<br>
+</li>
+</ul></li>
+<li>隐马尔可夫模型利用三个要素来模拟时序序列的发生过程
+<ul>
+<li>初始状态概率向量：系统启动时进入的第一个状态</li>
+<li>状态转移概率矩阵：状态转移的概率矩阵</li>
+<li>发射概率矩阵（也称作观测概率矩阵）：给定每种 𝑦， 𝑥
+都是一个独立的离散型随机变量，其参数对应一个向量</li>
+</ul></li>
+<li>隐马尔科夫模型的三种用法：样本生成问题、模型训练问题、序列预测问题</li>
+</ul>
+<p>2、隐马尔科夫模型的样本生成</p>
+<ul>
+<li><p>医疗诊断</p></li>
+<li><p>样本生成算法：考虑长 T
+的样本序列，它的生成过程就是沿着隐马尔可夫链走 T 步</p></li>
+</ul>
+<p>3、隐马尔科夫模型的训练</p>
+<ul>
+<li>极大似然法估计模型参数</li>
+</ul>
+<p>4、隐马尔科夫模型的预测</p>
+<ul>
+<li>概率计算的前向算法</li>
+<li>搜索状态序列的维特比算法</li>
+</ul>
+<p>5、隐马尔可夫模型的基本问题有三个</p>
+<ul>
+<li>样本生成</li>
+<li>参数估计</li>
+<li>序列预测</li>
+</ul>
+<h1 id="chapter-5-感知机分类与序列标注">Chapter 5
+感知机分类与序列标注</h1>
+<h2 id="分类问题">分类问题</h2>
+<p>1、分类（classification）指的是预测样本所属类别的一类问题</p>
+<h2 id="线性分类模型与感知机算法">线性分类模型与感知机算法</h2>
+<p>1、线性模型</p>
+<p>2、特征向量、特征提取、特征函数</p>
+<p>3、决策边界与分离超平面</p>
+<p>4、感知机算法</p>
+<p>5、损失函数与梯度下降</p>
+<h2 id="结构化预测问题">结构化预测问题</h2>
+<p>1、结构化预测（structured
+prediction）则是预测对象结构的一类监督学习问题</p>
+<ul>
+<li>相应的模型训练过程称作结构化学习（structured learning）</li>
+<li>自然语言处理中有许多任务都是结构化预测
+<ul>
+<li>比如序列标注预测结构是一整个序列</li>
+<li>句法分析预测结构是一棵句法树</li>
+<li>机器翻译预测结构是一段完整的译文</li>
+</ul></li>
+<li>结构化预测的过程就是给定一个模型及打分函数score，利用打分函数给一些备选结构打分，选择分数最高的结构作为预测输出</li>
+</ul>
+<h2 id="结构化感知机">结构化感知机</h2>
+<p>1、序列标注</p>
+<p>2、维特比解码算法</p>
+<h1 id="chapter-6-条件随机场与序列标注">Chapter 6
+条件随机场与序列标注</h1>
+<h2 id="机器学习的模型谱系">机器学习的模型谱系</h2>
+<figure>
+<img src="/2022/10/27/Intro-to-NLP/Users\ljh2000\AppData\Roaming\Typora\typora-user-images\image-20221227014938149.png" alt="image-20221227014938149">
+<figcaption aria-hidden="true">image-20221227014938149</figcaption>
+</figure>
+<p>1、生成式/判别式模型</p>
+<p>2、有向与无向概率图模型</p>
+<h2 id="条件随机场">条件随机场</h2>
+<p>1、条件随机场：条件随机场（Conditional Random Field，
+CRF）是一种给定输入随机变量 x， 求解条件概率 p(y ∣
+x)的概率无向图模型</p>
+<p>2、线性链条件随机场</p>
+<p>3、条件随机场的训练</p>
+<p>4、对比结构化感知机</p>
+<ul>
+<li>特征函数相同、权重向量相同、打分函数相同、预测算法相同、同属结构化学习<br>
+</li>
+<li>最大的不同点在于训练算法</li>
+</ul>
+<h2 id="条件随机场工具包-crf">条件随机场工具包 CRF++</h2>
+<p>日本奈良先端科学技术大学院大学的工藤拓所开发的CRF++</p>
+<h1 id="chapter-7-词性标注">Chapter 7 词性标注</h1>
+<h2 id="词性标注概述">词性标注概述</h2>
+<p>1、词性</p>
+<ul>
+<li><p>词性（Part-Of-Speech，
+POS）指的是单词的语法分类，也称为词类。同一个类别的词语具有相似的语法性质</p></li>
+<li><p>所有词性的集合称为词性标注集。</p></li>
+<li><p>用处：当下游应用遇到OOV时，可以通过OOV的词性猜测用法；词性也可以直接用于抽取一些信息，比如抽取所有描述特定商品的形容词等</p></li>
+</ul>
+<p>2、词性标注指的的是为句子中每个单词预测一个词性标签的任务</p>
+<p>3、词性标注模型</p>
+<h2 id="词性标注语料库与标注集">词性标注语料库与标注集</h2>
+<p>1、人民日报》 语料库与PKU标注集</p>
+<p>2、国家语委语料库与863标注集</p>
+<p>3、《诛仙》 语料库与CTB标注集</p>
+<h2 id="序列标注模型应用于词性标注">序列标注模型应用于词性标注</h2>
+<p>1、基于隐马尔科夫模型</p>
+<p>2、基于感知机</p>
+<p>3、基于条件随机场</p>
+<p>4、词性标注评测</p>
+<h2 id="自定义词性">自定义词性</h2>
+<p>1、自定义词性：在工程上，许多用户希望将特定的一些词语打上自定义的标签</p>
+<p>2、词典匹配、标注领域语料</p>
+<h1 id="chapter8-命名实体识别">Chapter8 命名实体识别</h1>
+<h2 id="命名实体识别概述">命名实体识别概述</h2>
+<p>1、命名实体（named
+entity）：文本中有一些描述实体的词汇，比如人名、地名、组织机构名、股票基金、医学术语等</p>
+<p>2、命名实体识别（Named Entity Recognition，
+NER）：识别出句子中命名实体的边界与类别的任务</p>
+<ul>
+<li>对于规则性较强的命名实体，完全可以通过正则表达式处理</li>
+<li>对于较短的命名实体，比如人名，完全可以通过分词确定边界，通过词性标注模块确定类别</li>
+<li>在另一些语料库中（如PKU等），
+机构名这样的复合词是拆开的，此时就需要一个专门的命名实体识别模块了</li>
+</ul>
+<p>3、基于规则的命名实体识别</p>
+<h2 id="命名实体识别语料库">命名实体识别语料库</h2>
+<p>1、1998年《人民日报》 语料库</p>
+<p>2、微软命名实体识别语料库</p>
+<h2 id="基于层叠隐马尔可夫模型的角色标注框架">基于层叠隐马尔可夫模型的角色标注框架</h2>
+<p>1、基于层叠隐马尔可夫模型的角色标注框架</p>
+<ul>
+<li>该框架的识别思路与日本人名的思路类似：为构成命名实体的短词语打标签，标签序列满足某种模式则识别为某种命名实体</li>
+<li>角色标注模块的输入是分词模块的输出，两个模块都由隐马尔可夫模型驱动，所以称为层叠隐马尔可夫模型</li>
+</ul>
+<h2 id="基于序列标注的命名实体识别">基于序列标注的命名实体识别</h2>
+<p>1、命名实体的边界可以通过{B, M, E,
+S}确定，其类别可以通过B-nt等附加类别的标签来确定</p>
+<p>2、特征提取</p>
+<p>3、基于隐马尔可夫模型序列标注的命名实体识别</p>
+<p>4、基于感知机序列标注的命名实体识别</p>
+<p>5、基于条件随机场序列标注的命名实体识别</p>
+<p>6、命名实体识别标准化评测</p>
+<ul>
+<li>P</li>
+<li>R</li>
+<li>F1</li>
+</ul>
+<h1 id="chapter-9-信息抽取">Chapter 9 信息抽取</h1>
+<h2 id="新词提取">新词提取</h2>
+<p>1、新词：词典之外的词语（也就是未登录词OOV）</p>
+<p>2、基本原理</p>
+<ul>
+<li>提取出大量文本（生语料）中的词语，无论新旧；</li>
+<li>用词典过滤掉已有的词语，于是得到新词</li>
+</ul>
+<p>3、信息熵</p>
+<p>4、互信息</p>
+<h2 id="关键词提取">关键词提取</h2>
+<p>1、词频</p>
+<p>2、TF-IDF</p>
+<ul>
+<li>TF-IDF(t,d) = TF(t,d) / DF(t) = TF(t,d) * IDF(t)</li>
+<li>t 为单词，d 为文档，TF(t,d) 表示 t 在 d 的频次；DF(t)
+表示有多少篇文档包含 t，DF 的倒数称为 IDF</li>
+</ul>
+<p>3、TextRank</p>
+<ul>
+<li>PageRank在文本上的应用</li>
+<li>PageRank将互联网看作有向图，互联网上的网页视作节点，迭代更新权重
+S(Vi)</li>
+<li>将PageRank应用到关键词提取，将单词视作节点而已，每个单词的外链来自自身前后固定大小的窗口内的所有单词</li>
+</ul>
+<h2 id="短语提取">短语提取</h2>
+<p>1、短语提取</p>
+<ul>
+<li>将新词提取中的“字符”替换为“单词”，马上得到短语提取</li>
+<li>注意先过滤停用词才能得到更好的效果</li>
+</ul>
+<h2 id="关键句提取">关键句提取</h2>
+<p>1、改进链接的BM25权重计算</p>
+<ul>
+<li>窗口的中心句与相邻的句子间的链接有强有弱，相似的句子将得到更高的投票<br>
+</li>
+<li>BM25(D,Q)</li>
+</ul>
+<p>2、TextRank</p>
+<ul>
+<li>以BM25相似度作为PageRank中的链接的权重，于是得到一种改进算法，称为TextRank<br>
+</li>
+<li>WS(Vi)</li>
+</ul>
+<h1 id="chapter-10-文本聚类">Chapter 10 文本聚类</h1>
+<h2 id="聚类">聚类</h2>
+<p>1、聚类（cluster
+analysis）指的是将给定对象的集合划分为不同子集的过程</p>
+<ul>
+<li>这些子集又被称为簇（cluster），一般没有交集</li>
+</ul>
+<p>2、根据元素从属于集合的确定程度，聚类分为硬聚类和软聚类。</p>
+<ul>
+<li>硬聚类（hard clustering）</li>
+<li>软聚类（soft clustering）</li>
+</ul>
+<p>3、聚类的应用：数据预处理、排重、大众化推荐、人工抽查</p>
+<p>4、文本聚类：对文档进行的聚类分析，改善搜索结果、生成同义词</p>
+<h2 id="文档的特征提取">文档的特征提取</h2>
+<p>1、词袋模型：词袋（bag-of-words）是信息检索与自然语言处理中最常用的文档表示模型，它将文档想象为一个装有词语的袋子，通过袋子中每种词语的计数等统计量将文档表示为向量</p>
+<p>2、词袋统计指标</p>
+<ul>
+<li>布尔词频：词频非零的话截取为1，否则为0。</li>
+<li>TF-IDF：将每个词语的倒排频次也纳入考虑。</li>
+<li>词向量</li>
+<li>定义由 n 个文档组成的集合为 S，定义其中第 i 个文档 di 的特征向量为
+<span class="math inline">\(d_i\)</span>，其计算方式如下： <span class="math inline">\(d_i =
+(TF(t_1,d_i),TF(t_2,d_i),...,TF(t_j,d_i),...,TF(t_m,d_i))\)</span></li>
+<li>其中 <span class="math inline">\(t_j\)</span> 表示词表中第 <span class="math inline">\(j\)</span> 种单词， <span class="math inline">\(m\)</span> 为词表大小。<span class="math inline">\(TF(t_j,d_i)\)</span> 表示单词 <span class="math inline">\(t_j\)</span> 在文档 di
+中的出现次数，缩放向量使得<span class="math inline">\(||d||=1\)</span></li>
+</ul>
+<h2 id="k均值算法">k均值算法</h2>
+<p>1、基本原理</p>
+<p>2、初始质心的选取</p>
+<p>3、更快的准则函数</p>
+<h2 id="重复二分聚类算法">重复二分聚类算法</h2>
+<p>1、重复二分聚类（repeated bisection clustering）
+是k均值算法的效率加强版，其名称中的bisection是“二分”的意思，指的是反复对子集进行二分</p>
+<p>2、基本原理</p>
+<h2 id="标准化评测">标准化评测</h2>
+<p>1、P、R、F1</p>
+<p>2、语料库</p>
+<p>3、评测实验</p>
+<h1 id="chapter-11-文本分类">Chapter 11 文本分类</h1>
+<h2 id="文本分类概念">文本分类概念</h2>
+<p>1、文本分类（text classification），又称文档分类（document
+classification），指的是将一个文档归类到一个或多个类别中的自然语言处理任务</p>
+<ul>
+<li>垃圾邮件过滤</li>
+<li>垃圾评论过滤</li>
+<li>自动标签</li>
+<li>情感分析</li>
+</ul>
+<p>2、文本的类别（category或class）有时又称标签（label），所有类别组成一个标注集</p>
+<p>3、文本分类语料库</p>
+<h2 id="文本分类的特征提取">文本分类的特征提取</h2>
+<p>1、分词</p>
+<p>2、卡方特征选择</p>
+<p>3、词袋向量</p>
+<h2 id="朴素贝叶斯分类器">朴素贝叶斯分类器</h2>
+<p>1、朴素贝叶斯原理</p>
+<p>2、朴素贝叶斯文本分类器</p>
+<h2 id="支持向量机分类器">支持向量机分类器</h2>
+<p>1、支持向量机（Support Vector Machine，
+SVM）是一种二分类模型，其学习策略在于如何找出一个决策边界，使得边界到正负样本的最小距离都最远</p>
+<p>2、线性支持向量机</p>
+<h2 id="标准化评测-1">标准化评测</h2>
+<p>1、P、R、F1</p>
+<h2 id="情感分析">情感分析</h2>
+<p>1、文本情感分析指的是提取文本中的主观信息的一种NLP任务，其具体目标通常是找出文本所对应的正负情感态度</p>
+<ul>
+<li>情感分析可以在实体、句子、段落乃至文档上进行</li>
+</ul>
+<p>2、情感分析语料库</p>
+<p>3、训练情感分析模型</p>
+<h1 id="chapter-12-依存句法分析">Chapter 12 依存句法分析</h1>
+<h2 id="短语结构树">短语结构树</h2>
+<p>1、语言满足复合性原理（principle of compositionality）</p>
+<ul>
+<li>在数学、语义学和语言哲学中，复合性原理是指，一个复杂表达式的意义是由其各组成部分的意义以及用以结合它们的规则来决定的</li>
+</ul>
+<p>2、上下文无关文法（context-free grammar， CFG），
+它由如下组件构成：</p>
+<ul>
+<li>终结符（terminal symbol， 无法再分的最小单位）集合 <span class="math inline">\(\sum\)</span>， 比如汉语的一个词表。</li>
+<li>非终结符（nonterminal symbol）集合
+V，比如“名词短语”“动词短语”等短语结构组成的集合。V
+中至少包含一个特殊的非终结符，即句子符或初始符，记作 <span class="math inline">\(S\in V\)</span>。</li>
+<li>推导规则 R，即推导非终结符的一系列规则：<span class="math inline">\(V-&gt; V+\sum\)</span> 。
+比如S→名词短语，以及名词短语→名词+名词短语，和名词短语→名词+名词。</li>
+</ul>
+<p>3、短语结构树</p>
+<h2 id="依存句法树">依存句法树</h2>
+<p>1、依存句法树关注的是句子中词语之间的语法联系，并且将其约束为树形结构</p>
+<p>2、依存句法理论</p>
+<ul>
+<li>依存语法理论认为词与词之间存在主从关系，这是一种二元不等价的关系</li>
+<li>如果一个词修饰另一个词，则称修饰词为从属词（dependent），被修饰的词语称为支配词（head），两者之间的语法关系称为依存关系（dependency
+relation）<br>
+</li>
+<li>将一个句子中所有词语的依存关系以有向边的形式表示出来，就会得到一棵树，称为依存句法树（dependency
+parse tree）</li>
+<li>4个约束性的公理。
+<ul>
+<li>有且只有一个词语（ROOT，虚拟根节点，简称虚根）不依存于其他词 语。
+根节点唯一性</li>
+<li>除此之外所有单词必须依存于其他单词。 连通</li>
+<li>每个单词不能依存于多个单词。 无环</li>
+<li>如果单词A依存于B，那么位置处于A和B之间的单词C只能依存于A、B或AB之间的单词。
+投射性（projective）</li>
+</ul></li>
+</ul>
+<p>3、中文依存句法树库</p>
+<h2 id="依存句法分析">依存句法分析</h2>
+<p>1、依存句法分析（dependency
+parsing）指的是分析句子的依存语法的一种中高级NLP任务，其输入通常是词语和词性，输出则是一棵依存句法树</p>
+<p>2、基于图的依存句法分析</p>
+<ul>
+<li>依存句法树其实是完全图（complete
+graph，每对顶点都相连的图）的一个子图</li>
+<li>为完全图中的每条边属于句法树与否的可能性打分</li>
+<li>利用Prim之类的算法找出最大生成树（MST）作为依存句法树</li>
+</ul>
+<p>3、基于转移的依存句法分析</p>
+<h2 id="基于转移的依存句法分析">基于转移的依存句法分析</h2>
+<p>1、Arc-Eager转移系统</p>
+<p>2、特征提取</p>
+<p>3、Static和Dynamic Oracles</p>
+<p>4、Dynamic Oracle与感知机在线学习</p>
+<p>5、柱搜索</p>
+<h1 id="chapter-13-深度学习与自然语言处理">Chapter 13
+深度学习与自然语言处理</h1>
+<h2 id="传统方法的局限">传统方法的局限</h2>
+<p>1、传统方法贵在精简，难在表示效果差</p>
+<p>2、数据稀疏</p>
+<p>3、特征模板</p>
+<p>4、误差传播</p>
+<h2 id="深度学习与优势">深度学习与优势</h2>
+<p>1、深度学习（Deep Learning， DL） 属于表示学习（Representation
+Learning）的范畴，指的是利用具有一定“深度”的模型来自动学习事物的向量表示（vectorial
+representation）的一种学习范式。目前，深度学习所采用的模型主要是层数在一层以上的神经网络。通过多层感知机提取向量才是深度学习的精髓</p>
+<p>2、用稠密向量解决数据稀疏</p>
+<p>3、用多层网络自动提取特征表示</p>
+<p>4、端到端的设计</p>
+<h2 id="word2vec">word2vec</h2>
+<p>1、连接传统机器学习与深度学习的桥梁</p>
+<p>2、CBOW</p>
+<p>3、训练词向量</p>
+<p>4、单词语义相似度</p>
+<p>5、词语类比</p>
+<p>6、短文本相似度</p>
+<h2 id="基于神经网络的高性能依存句法分析器">基于神经网络的高性能依存句法分析器</h2>
+<p>1、Arc-Standard转移系统</p>
+<p>2、特征提取</p>
+<h2 id="自然语言处理进阶">自然语言处理进阶</h2>
+<p>1、两个常用的特征提取器</p>
+<ul>
+<li>用于时序数据的递归神经网络RNN</li>
+<li>用于空间数据的卷积神经网络CNN</li>
+</ul>
+<p>2、词嵌入预训练</p>
+<ul>
+<li>fastText</li>
+<li>ELMo</li>
+<li>Contexutal String Embedding</li>
+</ul>
+<p>3、基于Transformer的预训练语言模型</p>
+<ul>
+<li>GPT</li>
+<li>BERT
+<ul>
+<li>RoBERT</li>
+<li>ALBERT</li>
+</ul></li>
+<li>XLNet</li>
+</ul>
+<p>4、序列标注</p>
+<ul>
+<li>BiLSTM-CRF</li>
+<li>Flair</li>
+</ul>
+<p>5、依存分析</p>
+<ul>
+<li>BiAffineAttention</li>
+<li>BiAffineAttention+BERT</li>
+</ul>
+<p>6、自动问答和文档摘要等，在深度学习时代反而显得非常简单</p>
+<p>7、许多QA任务归结为衡量问题和备选答案之间的文本相似度</p>
+<p>8、文档摘要涉及的文本生成技术，又恰好是RNN语言模型所擅长的</p>
+<p>9、机器翻译领域，
+Google早已利用基于神经网络的机器翻译技术淘汰了基于短语的机器翻译技术</p>
+<p>10、总体上，自然语言处理已经由过去的特征工程转变为结构工程</p>
+<p>11、如果有朝一日神经网络能够自行设计自己的结构，想必自然语言处理也能进入一个新的境界</p>
 
     </div>
 
@@ -401,7 +819,11 @@ p(w)=\prod_{t=1}^{k+1}p(w_t|w_{t-1}）
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#chapter-1-intro"><span class="nav-number">1.</span> <span class="nav-text">Chapter 1 Intro</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#chapter-2-%E8%AF%8D%E5%85%B8%E5%88%86%E8%AF%8D"><span class="nav-number">2.</span> <span class="nav-text">Chapter 2 词典分词</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%8D%E5%85%B8%E4%B8%8E%E5%88%87%E5%88%86%E7%AE%97%E6%B3%95"><span class="nav-number">2.1.</span> <span class="nav-text">词典与切分算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E5%85%B8%E6%A0%91%E4%B8%8E-ac-%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="nav-number">2.2.</span> <span class="nav-text">字典树与 AC 自动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ac%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="nav-number">2.3.</span> <span class="nav-text">AC自动机</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#chapter-3-%E4%BA%8C%E5%85%83%E8%AF%AD%E6%B3%95%E4%B8%8E%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D"><span class="nav-number">3.</span> <span class="nav-text">Chapter 3 二元语法与中文分词</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.1.</span> <span class="nav-text">语言模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E8%AF%AD%E6%96%99%E5%BA%93"><span class="nav-number">3.2.</span> <span class="nav-text">中文分词语料库</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#chapter-1-intro"><span class="nav-number">1.</span> <span class="nav-text">Chapter 1 Intro</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#chapter-2-%E8%AF%8D%E5%85%B8%E5%88%86%E8%AF%8D"><span class="nav-number">2.</span> <span class="nav-text">Chapter 2 词典分词</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%8D%E5%85%B8%E4%B8%8E%E5%88%87%E5%88%86%E7%AE%97%E6%B3%95"><span class="nav-number">2.1.</span> <span class="nav-text">词典与切分算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E5%85%B8%E6%A0%91%E4%B8%8E-ac-%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="nav-number">2.2.</span> <span class="nav-text">字典树与 AC 自动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ac%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="nav-number">2.3.</span> <span class="nav-text">AC自动机</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#chapter-3-%E4%BA%8C%E5%85%83%E8%AF%AD%E6%B3%95%E4%B8%8E%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D"><span class="nav-number">3.</span> <span class="nav-text">Chapter 3 二元语法与中文分词</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.1.</span> <span class="nav-text">语言模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E8%AF%AD%E6%96%99%E5%BA%93"><span class="nav-number">3.2.</span> <span class="nav-text">中文分词语料库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E4%B8%8E%E9%A2%84%E6%B5%8B"><span class="nav-number">3.3.</span> <span class="nav-text">训练与预测</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#chapter-4-%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%BA%8F%E5%88%97%E6%A0%87%E6%B3%A8"><span class="nav-number">4.</span> <span class="nav-text">Chapter 4
+隐马尔可夫模型与序列标注</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E6%A0%87%E6%B3%A8%E9%97%AE%E9%A2%98"><span class="nav-number">4.1.</span> <span class="nav-text">序列标注问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.2.</span> <span class="nav-text">隐马尔科夫模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#chapter-5-%E6%84%9F%E7%9F%A5%E6%9C%BA%E5%88%86%E7%B1%BB%E4%B8%8E%E5%BA%8F%E5%88%97%E6%A0%87%E6%B3%A8"><span class="nav-number">5.</span> <span class="nav-text">Chapter 5
+感知机分类与序列标注</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98"><span class="nav-number">5.1.</span> <span class="nav-text">分类问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%84%9F%E7%9F%A5%E6%9C%BA%E7%AE%97%E6%B3%95"><span class="nav-number">5.2.</span> <span class="nav-text">线性分类模型与感知机算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E5%8C%96%E9%A2%84%E6%B5%8B%E9%97%AE%E9%A2%98"><span class="nav-number">5.3.</span> <span class="nav-text">结构化预测问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E5%8C%96%E6%84%9F%E7%9F%A5%E6%9C%BA"><span class="nav-number">5.4.</span> <span class="nav-text">结构化感知机</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#chapter-6-%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA%E4%B8%8E%E5%BA%8F%E5%88%97%E6%A0%87%E6%B3%A8"><span class="nav-number">6.</span> <span class="nav-text">Chapter 6
+条件随机场与序列标注</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%A8%A1%E5%9E%8B%E8%B0%B1%E7%B3%BB"><span class="nav-number">6.1.</span> <span class="nav-text">机器学习的模型谱系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA"><span class="nav-number">6.2.</span> <span class="nav-text">条件随机场</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA%E5%B7%A5%E5%85%B7%E5%8C%85-crf"><span class="nav-number">6.3.</span> <span class="nav-text">条件随机场工具包 CRF++</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#chapter-7-%E8%AF%8D%E6%80%A7%E6%A0%87%E6%B3%A8"><span class="nav-number">7.</span> <span class="nav-text">Chapter 7 词性标注</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%8D%E6%80%A7%E6%A0%87%E6%B3%A8%E6%A6%82%E8%BF%B0"><span class="nav-number">7.1.</span> <span class="nav-text">词性标注概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%8D%E6%80%A7%E6%A0%87%E6%B3%A8%E8%AF%AD%E6%96%99%E5%BA%93%E4%B8%8E%E6%A0%87%E6%B3%A8%E9%9B%86"><span class="nav-number">7.2.</span> <span class="nav-text">词性标注语料库与标注集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E6%A0%87%E6%B3%A8%E6%A8%A1%E5%9E%8B%E5%BA%94%E7%94%A8%E4%BA%8E%E8%AF%8D%E6%80%A7%E6%A0%87%E6%B3%A8"><span class="nav-number">7.3.</span> <span class="nav-text">序列标注模型应用于词性标注</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%AF%8D%E6%80%A7"><span class="nav-number">7.4.</span> <span class="nav-text">自定义词性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#chapter8-%E5%91%BD%E5%90%8D%E5%AE%9E%E4%BD%93%E8%AF%86%E5%88%AB"><span class="nav-number">8.</span> <span class="nav-text">Chapter8 命名实体识别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E5%90%8D%E5%AE%9E%E4%BD%93%E8%AF%86%E5%88%AB%E6%A6%82%E8%BF%B0"><span class="nav-number">8.1.</span> <span class="nav-text">命名实体识别概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E5%90%8D%E5%AE%9E%E4%BD%93%E8%AF%86%E5%88%AB%E8%AF%AD%E6%96%99%E5%BA%93"><span class="nav-number">8.2.</span> <span class="nav-text">命名实体识别语料库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%B1%82%E5%8F%A0%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%A7%92%E8%89%B2%E6%A0%87%E6%B3%A8%E6%A1%86%E6%9E%B6"><span class="nav-number">8.3.</span> <span class="nav-text">基于层叠隐马尔可夫模型的角色标注框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%BA%8F%E5%88%97%E6%A0%87%E6%B3%A8%E7%9A%84%E5%91%BD%E5%90%8D%E5%AE%9E%E4%BD%93%E8%AF%86%E5%88%AB"><span class="nav-number">8.4.</span> <span class="nav-text">基于序列标注的命名实体识别</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#chapter-9-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96"><span class="nav-number">9.</span> <span class="nav-text">Chapter 9 信息抽取</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E8%AF%8D%E6%8F%90%E5%8F%96"><span class="nav-number">9.1.</span> <span class="nav-text">新词提取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E8%AF%8D%E6%8F%90%E5%8F%96"><span class="nav-number">9.2.</span> <span class="nav-text">关键词提取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%AD%E8%AF%AD%E6%8F%90%E5%8F%96"><span class="nav-number">9.3.</span> <span class="nav-text">短语提取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E5%8F%A5%E6%8F%90%E5%8F%96"><span class="nav-number">9.4.</span> <span class="nav-text">关键句提取</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#chapter-10-%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB"><span class="nav-number">10.</span> <span class="nav-text">Chapter 10 文本聚类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%81%9A%E7%B1%BB"><span class="nav-number">10.1.</span> <span class="nav-text">聚类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%A1%A3%E7%9A%84%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96"><span class="nav-number">10.2.</span> <span class="nav-text">文档的特征提取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#k%E5%9D%87%E5%80%BC%E7%AE%97%E6%B3%95"><span class="nav-number">10.3.</span> <span class="nav-text">k均值算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E5%A4%8D%E4%BA%8C%E5%88%86%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95"><span class="nav-number">10.4.</span> <span class="nav-text">重复二分聚类算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E5%8C%96%E8%AF%84%E6%B5%8B"><span class="nav-number">10.5.</span> <span class="nav-text">标准化评测</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#chapter-11-%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB"><span class="nav-number">11.</span> <span class="nav-text">Chapter 11 文本分类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%E6%A6%82%E5%BF%B5"><span class="nav-number">11.1.</span> <span class="nav-text">文本分类概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%E7%9A%84%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96"><span class="nav-number">11.2.</span> <span class="nav-text">文本分类的特征提取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%88%86%E7%B1%BB%E5%99%A8"><span class="nav-number">11.3.</span> <span class="nav-text">朴素贝叶斯分类器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA%E5%88%86%E7%B1%BB%E5%99%A8"><span class="nav-number">11.4.</span> <span class="nav-text">支持向量机分类器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E5%8C%96%E8%AF%84%E6%B5%8B-1"><span class="nav-number">11.5.</span> <span class="nav-text">标准化评测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90"><span class="nav-number">11.6.</span> <span class="nav-text">情感分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#chapter-12-%E4%BE%9D%E5%AD%98%E5%8F%A5%E6%B3%95%E5%88%86%E6%9E%90"><span class="nav-number">12.</span> <span class="nav-text">Chapter 12 依存句法分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%AD%E8%AF%AD%E7%BB%93%E6%9E%84%E6%A0%91"><span class="nav-number">12.1.</span> <span class="nav-text">短语结构树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%9D%E5%AD%98%E5%8F%A5%E6%B3%95%E6%A0%91"><span class="nav-number">12.2.</span> <span class="nav-text">依存句法树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%9D%E5%AD%98%E5%8F%A5%E6%B3%95%E5%88%86%E6%9E%90"><span class="nav-number">12.3.</span> <span class="nav-text">依存句法分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E8%BD%AC%E7%A7%BB%E7%9A%84%E4%BE%9D%E5%AD%98%E5%8F%A5%E6%B3%95%E5%88%86%E6%9E%90"><span class="nav-number">12.4.</span> <span class="nav-text">基于转移的依存句法分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#chapter-13-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%8E%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86"><span class="nav-number">13.</span> <span class="nav-text">Chapter 13
+深度学习与自然语言处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%A0%E7%BB%9F%E6%96%B9%E6%B3%95%E7%9A%84%E5%B1%80%E9%99%90"><span class="nav-number">13.1.</span> <span class="nav-text">传统方法的局限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%8E%E4%BC%98%E5%8A%BF"><span class="nav-number">13.2.</span> <span class="nav-text">深度学习与优势</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#word2vec"><span class="nav-number">13.3.</span> <span class="nav-text">word2vec</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E9%AB%98%E6%80%A7%E8%83%BD%E4%BE%9D%E5%AD%98%E5%8F%A5%E6%B3%95%E5%88%86%E6%9E%90%E5%99%A8"><span class="nav-number">13.4.</span> <span class="nav-text">基于神经网络的高性能依存句法分析器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E8%BF%9B%E9%98%B6"><span class="nav-number">13.5.</span> <span class="nav-text">自然语言处理进阶</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -465,7 +887,7 @@ p(w)=\prod_{t=1}^{k+1}p(w_t|w_{t-1}）
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -474,7 +896,7 @@ p(w)=\prod_{t=1}^{k+1}p(w_t|w_{t-1}）
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">8k</span>
+    <span title="站点总字数">14k</span>
 </div>
 
         
