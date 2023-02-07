@@ -31,7 +31,7 @@
 <meta property="og:image" content="http://ljh2000.github.io/2023/02/07/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/2.png">
 <meta property="og:image" content="http://ljh2000.github.io/2023/02/07/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/3.png">
 <meta property="article:published_time" content="2023-02-07T11:08:42.000Z">
-<meta property="article:modified_time" content="2023-02-07T12:28:49.494Z">
+<meta property="article:modified_time" content="2023-02-07T12:36:02.582Z">
 <meta property="article:author" content="ljh2000">
 <meta property="article:tag" content="Prompt">
 <meta name="twitter:card" content="summary">
@@ -195,7 +195,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2023-02-07 19:08:42 / 修改时间：20:28:49" itemprop="dateCreated datePublished" datetime="2023-02-07T19:08:42+08:00">2023-02-07</time>
+              <time title="创建时间：2023-02-07 19:08:42 / 修改时间：20:36:02" itemprop="dateCreated datePublished" datetime="2023-02-07T19:08:42+08:00">2023-02-07</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -300,15 +300,16 @@ F\rvert}\}\)</span>，其中<span class="math inline">\(\lvert
 F\rvert\)</span>表示信息片段的总数。详细地说，它在一个描述片段和信息类型之间关系的通用句子中替换了关键词，以获得一个模块化的子提示。我们的框架通过从模块化子提示库中搜索其片段来获得目标信息的子提示。通过这种方式，CPGF可以有效地提取具有从未见过的类型的信息元素，如果这些元素出现在片段库中。</p>
 <h3 id="prompts-construction">Prompts Construction</h3>
 <p>第<span class="math inline">\(j\)</span>种信息类型的提示是通过连接原始文本和子提示来构建的：
-$$ <span class="math display">\[\begin{align}
-
+<span class="math display">\[
+\begin{align}
 \mathcal{S}_{\text{prompt}}^j &amp;= f_{\text{prompt}}(S) \\
-
-​                          &amp;= S \mathop{\Vert} Pr^j
-
-\end{align}\]</span> <span class="math display">\[
-其中$\mathop\Vert$表示拼接两段文本，$Pr^j$表示组合目标信息中所有相关元素的子提示：
-\]</span> Pr^j = _{i=1}^n p_i^j $$ 对于NER和RE，<span class="math inline">\(n\)</span>始终为1。对于EE，<span class="math inline">\(S^j_{\text{promt}}\)</span>被称为特定类型的prompt，如果用来组成的提示语是依赖于类型的，因为这个提示语的每个部分都与信息类型有关。由模块化子提示组成的提示被命名为
+                          &amp;= S \mathop{\Vert} Pr^j
+\end{align}
+\]</span> 其中<span class="math inline">\(\mathop\Vert\)</span>表示拼接两段文本，<span class="math inline">\(Pr^j\)</span>表示组合目标信息中所有相关元素的子提示：</p>
+<p><span class="math display">\[
+Pr^j = \mathop{\Vert}_{i=1}^n p_i^j
+\]</span></p>
+<p>对于NER和RE，<span class="math inline">\(n\)</span>始终为1。对于EE，<span class="math inline">\(S^j_{\text{promt}}\)</span>被称为特定类型的prompt，如果用来组成的提示语是依赖于类型的，因为这个提示语的每个部分都与信息类型有关。由模块化子提示组成的提示被命名为
 "可组合提示"。</p>
 <h3 id="answer-generation">Answer Generation</h3>
 <p><img src="/2023/02/07/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/3.png"></p>
