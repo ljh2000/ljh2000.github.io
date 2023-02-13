@@ -6,7 +6,7 @@
   <link href="http://ljh2000.github.io/atom.xml" rel="self"/>
   
   <link href="http://ljh2000.github.io/"/>
-  <updated>2023-02-11T13:35:52.981Z</updated>
+  <updated>2023-02-13T08:04:26.211Z</updated>
   <id>http://ljh2000.github.io/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>OCR-free Document Understanding Transformer</title>
+    <link href="http://ljh2000.github.io/2023/02/13/OCR-free-Document-Understanding-Transformer/"/>
+    <id>http://ljh2000.github.io/2023/02/13/OCR-free-Document-Understanding-Transformer/</id>
+    <published>2023-02-13T07:28:15.000Z</published>
+    <updated>2023-02-13T08:04:26.211Z</updated>
+    
+    <content type="html"><![CDATA[<p>ECCV2022</p><p>不依赖OCR的视觉文档理解Transformer，能实现文档分类、文档信息提取、VQA等多项任务</p><p>论文链接：<a href="https://arxiv.org/pdf/2111.15664v5.pdf">OCR-freeDocument Understanding Transformer</a></p><p>Github链接：<a href="https://github.com/clovaai/donut">donut</a></p><p><img src="/2023/02/13/OCR-free-Document-Understanding-Transformer/1.png"></p><span id="more"></span><h2 id="abstract">Abstract</h2><p>Understanding document images (e.g., invoices) is a core butchallenging task since it requires complex functions such as readingtext and a holistic understanding of the document. Current VisualDocument Understanding (VDU) methods outsource the task of reading textto off- the-shelf Optical Character Recognition (OCR) engines and focuson the understanding task with the OCR outputs. Although such OCR-basedapproaches have shown promising performance, they suffer from 1) highcomputational costs for using OCR; 2) inflexibility of OCR models onlanguages or types of documents; 3) OCR error propagation to the sub-sequent process. To address these issues, in this paper, we introduce anovel OCR-free VDU model named Donut, which stands for Documentunderstanding transformer. As the first step in OCR-free VDU research,we propose a simple architecture (i.e., Transformer) with a pre-trainingobjective (i.e., cross-entropy loss). Donut is conceptually simple yetef- fective. Through extensive experiments and analyses, we show asimple OCR-free VDU model, Donut, achieves state-of-the-art performanceson various VDU tasks in terms of both speed and accuracy. In addition,we offer a synthetic data generator that helps the model pre-training tobe flexible in various languages and domains. The code, trained model,and synthetic data are available athttps://github.com/clovaai/donut.</p><h2 id="introduction">Introduction</h2><p>视觉文档理解（VDU）的任务目标是从文档图像中提取出有用的信息，其具体任务包括文档分类、文档信息提取和视觉问题回答（VQA）等。现有的大部分VDU模型一般使用两阶段方案来解决这一问题：1、读取文档图像中的文本;2、对文件的整体理解。这些VDU模型高度依赖OCR引擎完成由图像到文档文本的转换任务，并在读取得到的文档文本基础上完成文本理解建模。</p><p>这一做法存在一些问题：</p><ul><li>使用OCR作为预处理方法的代价很高。通常的策略是使用预训练好的现成的OCR引擎，但对于高性能的OCR模型，推理的计算成本非常高。</li><li>现有的OCR方法很难处理不同语言或领域变化，这可能导致泛化能力较差。重新训练一个OCR模型，也需要大量的训练成本和大规模的数据集。</li><li>OCR识别的错误会传播到VDU系统，并对后续文档理解进程产生负面影响（有一些方法引入了OCR纠错模块，但在实际应用中会增大系统开销，增加模型复杂度）。</li></ul><p><img src="/2023/02/13/OCR-free-Document-Understanding-Transformer/2.png"></p><p>本文在没有OCR的前提下，实现了端到端建模，能直接完成从原始输入图像到下游任务所需输出的映射，有效解决了传统的VDU问题对OCR的依赖问题。</p><h2 id="method">Method</h2><p>Donus：Document understandingtransformer，模型架构简单，由一个基于Transformer的visualencoder和一个文本decoder组成。</p><h3 id="encoder">Encoder</h3><p>编码器将输入的文档图像转换为一组嵌入 <span class="math inline">\(\{z_i|z_i \in R^d,1 \le i \len\}\)</span>，其中，n为特征图的大小或 image patches 的数量，d为编码器的隐层向量维数。本文选取了 Swin Transformer 作为主干网络。</p><h3 id="decoder">Decoder</h3><p>对于编码器得到的嵌入，解码器生成一个 token sequence，表示第 i 个token 的 one-hot 向量。本文使用 BART 作为解码器架构。</p><h3 id="pre-training">Pre-training</h3><p>预训练阶段模型被训练为从左上到右下的阅读顺序，通过前一文本和当前图像来联合预测下一个文本内容，并最小化交叉熵损失。</p><h3 id="synthdog">SynthDoG</h3><p>对于上述合成数据，作者设计了一种数据合成的范式SynthDoG，将文档分为背景、文档纹理、文本、布局四个组件。</p><h3 id="fine-tuning">Fine-tuning</h3><p>微调阶段需要教模型如何理解文档图像，本文将所有下游任务解释为一个 JSON预测问题。</p><p>解码器被训练为生成一个令牌序列，该令牌序列可以转换为表示所需输出信息的JSON 。例如，在文档分类任务中，解码器被训练生成一个令牌序列 [STARTclass][memo][END class]，它是1对1可逆的 JSON {"class": "memo"}。</p><h2 id="experiments-and-analyses">Experiments and Analyses</h2><p>Document Classification</p><p><img src="/2023/02/13/OCR-free-Document-Understanding-Transformer/3.png"></p><p>Document Information Extraction</p><p><img src="/2023/02/13/OCR-free-Document-Understanding-Transformer/4.png"></p><p>Document Visual Question Answering</p><p><img src="/2023/02/13/OCR-free-Document-Understanding-Transformer/5.png"></p><p><img src="/2023/02/13/OCR-free-Document-Understanding-Transformer/6.png"></p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;ECCV2022&lt;/p&gt;
+&lt;p&gt;不依赖OCR的视觉文档理解Transformer，能实现文档分类、文档信息提取、VQA等多项任务&lt;/p&gt;
+&lt;p&gt;论文链接：&lt;a href=&quot;https://arxiv.org/pdf/2111.15664v5.pdf&quot;&gt;OCR-free
+Document Understanding Transformer&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Github链接：&lt;a href=&quot;https://github.com/clovaai/donut&quot;&gt;donut&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2023/02/13/OCR-free-Document-Understanding-Transformer/1.png&quot;&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Paper" scheme="http://ljh2000.github.io/categories/Paper/"/>
+    
+    
+    <category term="VQA" scheme="http://ljh2000.github.io/tags/VQA/"/>
+    
+    <category term="Visual Document Understanding" scheme="http://ljh2000.github.io/tags/Visual-Document-Understanding/"/>
+    
+  </entry>
   
   <entry>
     <title>A Unified Generative Framework based on Prompt Learning for Various Information Extraction Tasks</title>
